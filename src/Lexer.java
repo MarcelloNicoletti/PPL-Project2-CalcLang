@@ -15,6 +15,7 @@ public class Lexer {
         try {
             input = new Scanner(new File(fileName));
         } catch (Exception e) {
+            System.out.println("Source file: " + fileName + " not found.");
         }
     }
 
@@ -32,12 +33,12 @@ public class Lexer {
                 char x = s.charAt(k);
 
                 if (state == 0) {
-                    if (whiteSpace(x)) {
+                    if (isWhiteSpace(x)) {
                         // stay in state 0
-                    } else if (letter(x)) {
+                    } else if (isLetter(x)) {
                         state = 1;
                         id += x;
-                    } else if (digit(x)) {
+                    } else if (isDigit(x)) {
                         state = 3;
                         value = 10 * value + x - '0';
                     }
@@ -53,19 +54,20 @@ public class Lexer {
         return null;
     }
 
-    private boolean whiteSpace (char x) {
-        // TODO: Not implemented.
-        return false;
+    private boolean isWhiteSpace (char x) {
+        String whitespace = " \t\r\f\n";
+        return whitespace.indexOf(x) != -1;
     }
 
-    private boolean letter (char x) {
-        // TODO: Not implemented.
-        return false;
+    private boolean isLetter (char x) {
+        boolean isLower = x >= 'a' && x <= 'z';
+        boolean isUpper = x >= 'A' && x <= 'Z';
+
+        return isLower || isUpper;
     }
 
-    private boolean digit (char x) {
-        // TODO: Not implemented.
-        return false;
+    private boolean isDigit (char x) {
+        return x >= '0' && x <= '9';
     }
 
 }
