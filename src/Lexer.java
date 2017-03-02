@@ -20,11 +20,14 @@ public class Lexer {
     }
 
     public ArrayList<Token> scan () {
-        ArrayList<Token> list = new ArrayList<Token>();
+        ArrayList<Token> tokens = new ArrayList<Token>();
 
         int state = 0;
+
         String id = "";
+        boolean isId = false;
         double value = 0;
+        boolean isValue = false;
 
         while (input.hasNext()) {
             String s = input.nextLine();
@@ -38,9 +41,11 @@ public class Lexer {
                     } else if (isLetter(x)) {
                         state = 1;
                         id += x;
+                        isId = true;
                     } else if (isDigit(x)) {
                         state = 3;
                         value = 10 * value + x - '0';
+                        isValue = true;
                     }
                 } else if (state == 1) {
                 } else if (state == 2) {
@@ -50,20 +55,23 @@ public class Lexer {
             }
         }
 
-        // TODO: Incomplete
-        return null;
+        if (isId) {
+            tokens.add(new Token(id));
+        } else if (isValue) {
+            tokens.add(new Token(value));
+        } else {
+            // Stay empty
+        }
+
+        return tokens;
     }
 
     private boolean isWhiteSpace (char x) {
-        String whitespace = " \t\r\f\n";
-        return whitespace.indexOf(x) != -1;
+        return " \t\r\f\n".indexOf(x) != -1;
     }
 
     private boolean isLetter (char x) {
-        boolean isLower = x >= 'a' && x <= 'z';
-        boolean isUpper = x >= 'A' && x <= 'Z';
-
-        return isLower || isUpper;
+        return x >= 'a' && x <= 'z' || x >= 'A' && x <= 'Z';
     }
 
     private boolean isDigit (char x) {
