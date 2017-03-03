@@ -3,5 +3,7 @@ public class CalcLangException extends java.lang.Exception {
         super();
     }
 
-    public CalcLangException (String message) { super(message); }
+    public CalcLangException (String message) {
+        super(message);
+    }
 }

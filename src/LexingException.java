@@ -1,7 +1,11 @@
 public class LexingException extends CalcLangException {
-    public LexingException () { super(); }
+    public LexingException () {
+        super();
+    }
 
-    public LexingException (String message) { super(message); }
+    public LexingException (String message) {
+        super(message);
+    }
 
     public static LexingException newUnexpectedSymbol (char symbol, int charNum, int lineNum, String line) {
         StringBuilder sb = new StringBuilder();
