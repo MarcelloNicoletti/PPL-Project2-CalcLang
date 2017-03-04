@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+
 public class Token {
     String kind, data, line;
     int lineNum;
@@ -12,6 +14,13 @@ public class Token {
     public Token (double value, String line, int lineNum) {
         kind = "number";
         data = Double.toString(value);
+        this.line = line;
+        this.lineNum = lineNum;
+    }
+
+    public Token (BigDecimal value, String line, int lineNum) {
+        kind = "number";
+        data = value.toString();
         this.line = line;
         this.lineNum = lineNum;
     }
