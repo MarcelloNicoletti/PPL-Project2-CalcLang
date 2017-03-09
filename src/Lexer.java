@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -39,6 +38,10 @@ public class Lexer {
 
     public Collection<Token> getAllTokens () {
         return initialTokens;
+    }
+
+    public void putTokenBack (Token token) {
+        tokens.push(token);
     }
 
     public void resetTokens () {
@@ -87,7 +90,7 @@ public class Lexer {
                         runningToken.append(currentChar);
                     } else {
                         this.tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine,
-                                isIn(runningToken.toString(), keywords) ? TokenType.KEY : TokenType.ID));
+                                isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
                         charNum -= 1; // put back this char & return to state 0
                         runningToken = new StringBuilder();
                         // tokenStart = 0;
@@ -138,7 +141,7 @@ public class Lexer {
             // Finalize tokens that end at the end of the line.
             if (fsaState == 1) {
                 tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine,
-                        isIn(runningToken.toString(), keywords) ? TokenType.KEY : TokenType.ID));
+                        isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
                 runningToken = new StringBuilder();
                 // tokenStart = 0;
                 fsaState = 0;
@@ -164,9 +167,9 @@ public class Lexer {
         }
     }
 
-    private boolean isIn (String str, String[] arr) {
-        for (String test : arr) {
-            if (str.equals(test)) {
+    private boolean isKeyword (String x) {
+        for (String test : keywords) {
+            if (x.equals(test)) {
                 return true;
             }
         }
