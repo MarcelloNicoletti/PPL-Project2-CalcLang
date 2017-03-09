@@ -1,10 +1,10 @@
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.util.Collection;
 
 public class CalcLang {
     public static void main (String[] args) {
         Lexer lex;
-        List<Token> tokens;
+        Collection<Token> tokens;
 
         try {
             lex = new Lexer(args[0]);
@@ -18,18 +18,13 @@ public class CalcLang {
             return;
         }
 
-        tokens = lex.getTokens();
-
-        System.out.println("Printing tokens: ");
         int count = 0;
-        for (Token token : tokens) {
-            System.out.println("Token " + (count++) + ": " + token);
-        }
 
         System.out.println("\nToken locations inline:");
 
-        for (Token token : tokens) {
-            System.out.println("\"" + token.getValue() + "\" in line " + token.getLineNumber());
+        while (lex.hasNextToken()) {
+            Token token = lex.nextToken();
+            System.out.println("Token " + (count++) + ": " + lex.nextToken());
             System.out.println(token.getSourceLine());
             for (int i = 0; i < token.getStartChar(); i++) {
                 System.out.print(" ");

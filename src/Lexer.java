@@ -1,24 +1,48 @@
-/*
-  lexical phase for
-  simple calculator language
-*/
-
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This lexer reads a calcLang source file into tokens and provides them as a stack style interface.
+ */
 public class Lexer {
 
     private static final String[] keywords = {"show", "msg", "newline"};
     private Scanner input;
-    private List<Token> tokens;
+    private LinkedList<Token> tokens, initialTokens;
 
     public Lexer (String fileName) throws FileNotFoundException, LexingException {
         input = new Scanner(new File(fileName));
         this.tokens = new LinkedList<>();
         this.tokenize();
+        this.initialTokens = new LinkedList<>(this.tokens);
+    }
+
+    public boolean hasNextToken () {
+        return tokens.size() > 0;
+    }
+
+    public Token nextToken () {
+        return (tokens.size() > 0) ? tokens.pop() : null;
+    }
+
+    public Token peekNextToken () {
+        return (tokens.size() > 0) ? tokens.peek() : null;
+    }
+
+    public Collection<Token> getRemainingTokens () {
+        return tokens;
+    }
+
+    public Collection<Token> getAllTokens () {
+        return initialTokens;
+    }
+
+    public void resetTokens () {
+        this.tokens = new LinkedList<>(this.initialTokens);
     }
 
     private void tokenize () throws LexingException {
@@ -171,9 +195,5 @@ public class Lexer {
 
     private boolean isMathSymbol (char x) {
         return "=+-/*()".indexOf(x) != -1;
-    }
-
-    public List<Token> getTokens () {
-        return tokens;
     }
 }
