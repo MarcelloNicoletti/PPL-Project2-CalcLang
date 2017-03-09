@@ -1,5 +1,5 @@
 /**
- * Immutable class for storing tokens from the lexing phase
+ * Immutable class for storing tokens from the lexing phase.
  */
 public class Token {
     private final TokenType type;
