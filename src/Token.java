@@ -1,32 +1,41 @@
-import java.math.BigDecimal;
-
+/**
+ * Immutable class for storing tokens from the lexing phase
+ */
 public class Token {
-    String kind, data, line;
-    int lineNum;
+    private final TokenType type;
+    private final String value, sourceLine;
+    private final int lineNumber, startChar;
 
-    public Token (String id, String line, int lineNum) {
-        kind = "string";
-        data = id;
-        this.line = line;
-        this.lineNum = lineNum;
-    }
-
-    public Token (double value, String line, int lineNum) {
-        kind = "number";
-        data = Double.toString(value);
-        this.line = line;
-        this.lineNum = lineNum;
-    }
-
-    public Token (BigDecimal value, String line, int lineNum) {
-        kind = "number";
-        data = value.toString();
-        this.line = line;
-        this.lineNum = lineNum;
+    public Token (String id, int lineNumber, int startChar, String line, TokenType type) {
+        value = id;
+        this.type = type;
+        this.sourceLine = line;
+        this.startChar = startChar;
+        this.lineNumber = lineNumber;
     }
 
     @Override
     public String toString () {
-        return "Kind: " + kind + "token: " + data;
+        return getType() + ": \"" + getValue() + "\"";
+    }
+
+    public String getValue () {
+        return value;
+    }
+
+    public String getSourceLine () {
+        return sourceLine;
+    }
+
+    public TokenType getType () {
+        return type;
+    }
+
+    public int getLineNumber () {
+        return lineNumber;
+    }
+
+    public int getStartChar () {
+        return startChar;
     }
 }
