@@ -19,12 +19,9 @@ public class CalcLang {
         }
 
         int count = 0;
-
-        System.out.println("\nToken locations inline:");
-
         while (lex.hasNextToken()) {
             Token token = lex.nextToken();
-            System.out.println("Token " + (count++) + ": " + lex.nextToken());
+            System.out.println("Line " + token.getLineNumber() + ": Token " + (count++) + ": " + token.toString());
             System.out.println(token.getSourceLine());
             for (int i = 0; i < token.getStartChar(); i++) {
                 System.out.print(" ");
