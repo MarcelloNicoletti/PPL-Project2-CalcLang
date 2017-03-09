@@ -1,0 +1,10 @@
+a = 01
+b = 2 # This is a comment
+c = 390.98
+x = 2
+y = a * x * x + b * x + c
+msg "ax^2 + bx + c for x = "
+show x
+msg " is "
+show y
+newline
