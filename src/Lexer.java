@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -8,13 +7,11 @@ import java.util.*;
 public class Lexer {
 
     private static final String[] keywords = {"show", "msg", "newline", "input"};
-    private Scanner input;
     private LinkedList<Token> tokens, initialTokens;
 
     public Lexer (String fileName) throws FileNotFoundException, LexingException {
-        input = new Scanner(new File(fileName));
         this.tokens = new LinkedList<>();
-        this.tokenize();
+        this.tokenize(new FileReader(new File(fileName)));
         this.initialTokens = new LinkedList<>(this.tokens);
     }
 
@@ -50,9 +47,10 @@ public class Lexer {
         return tokens.size();
     }
 
-    private void tokenize () throws LexingException {
+    private void tokenize (Reader rdr) throws LexingException {
         // TODO: Review token termination cases.
-        // TODO: Refactor to take a buffered reader as argument and tokenize using that.
+
+        Scanner scn = new Scanner(rdr);
         int fsaState = 0;
         int lineNum = 0;
         int tokenStart = 0;
@@ -60,8 +58,8 @@ public class Lexer {
         StringBuilder runningToken = new StringBuilder();
         int decimalPlaces = 0;
 
-        while (input.hasNextLine()) {
-            final String sourceLine = input.nextLine();
+        while (scn.hasNextLine()) {
+            final String sourceLine = scn.nextLine();
             lineNum++;
             for (int charNum = 0; charNum < sourceLine.length(); charNum++) {
                 // process next individual char in the file
