@@ -9,10 +9,16 @@ public class Lexer {
     private static final String[] keywords = {"show", "msg", "newline", "input"};
     private LinkedList<Token> tokens, initialTokens;
 
-    public Lexer (String fileName) throws FileNotFoundException, LexingException {
+    { // Runs just before any constructor
         this.tokens = new LinkedList<>();
-        this.tokenize(new FileReader(new File(fileName)));
-        this.initialTokens = new LinkedList<>(this.tokens);
+    }
+
+    public Lexer (String string) throws LexingException{
+        this.tokenize(new StringReader(string));
+    }
+
+    public Lexer (File file) throws FileNotFoundException, LexingException {
+        this.tokenize(new FileReader(file)); // new File(filename);
     }
 
     public boolean hasNextToken () {
@@ -160,6 +166,8 @@ public class Lexer {
                 runningToken = new StringBuilder();
             }
         }
+
+        this.initialTokens = new LinkedList<>(this.tokens);
     }
 
     private boolean isKeyword (String x) {

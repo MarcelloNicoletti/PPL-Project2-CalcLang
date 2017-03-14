@@ -1,11 +1,11 @@
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class CalcLang {
     public static void main (String[] args) {
         Lexer lex;
 
         try {
-            lex = new Lexer(args[0]);
+            lex = new Lexer(new File(args[0]));
         } catch (FileNotFoundException ex) {
             System.err.print("Source file '" + args[0] + "' not found.");
             System.exit(-1);
