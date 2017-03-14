@@ -1,10 +1,8 @@
 import java.io.FileNotFoundException;
-import java.util.Collection;
 
 public class CalcLang {
     public static void main (String[] args) {
         Lexer lex;
-        Collection<Token> tokens;
 
         try {
             lex = new Lexer(args[0]);

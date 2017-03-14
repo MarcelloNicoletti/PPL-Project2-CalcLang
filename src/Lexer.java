@@ -9,7 +9,7 @@ import java.util.Scanner;
  */
 public class Lexer {
 
-    private static final String[] keywords = {"show", "msg", "newline"};
+    private static final String[] keywords = {"show", "msg", "newline", "input"};
     private Scanner input;
     private LinkedList<Token> tokens, initialTokens;
 
@@ -44,8 +44,12 @@ public class Lexer {
         tokens.push(token);
     }
 
-    public void resetTokens () {
+    public void resetAllTokens () {
         this.tokens = new LinkedList<>(this.initialTokens);
+    }
+
+    public int getTokenCount() {
+        return tokens.size();
     }
 
     private void tokenize () throws LexingException {
