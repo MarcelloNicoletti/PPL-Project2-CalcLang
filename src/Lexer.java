@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * This lexer reads a calcLang source file into tokens and provides them as a stack style interface.
