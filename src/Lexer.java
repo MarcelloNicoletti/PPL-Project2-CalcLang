@@ -51,6 +51,8 @@ public class Lexer {
     }
 
     private void tokenize () throws LexingException {
+        // TODO: Review token termination cases.
+        // TODO: Refactor to take a buffered reader as argument and tokenize using that.
         int fsaState = 0;
         int lineNum = 0;
         int tokenStart = 0;
@@ -58,7 +60,7 @@ public class Lexer {
         StringBuilder runningToken = new StringBuilder();
         int decimalPlaces = 0;
 
-        while (input.hasNext()) {
+        while (input.hasNextLine()) {
             final String sourceLine = input.nextLine();
             lineNum++;
             for (int charNum = 0; charNum < sourceLine.length(); charNum++) {
@@ -95,7 +97,6 @@ public class Lexer {
                                 isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
                         charNum -= 1; // put back this char & return to state 0
                         runningToken = new StringBuilder();
-                        // tokenStart = 0;
                         fsaState = 0;
                     }
                 } else if (fsaState == 3) { // Number token (integer part): Consume digits to runningToken
@@ -109,7 +110,6 @@ public class Lexer {
 
                         charNum -= 1; // put back this char & return to state 0
                         runningToken = new StringBuilder();
-                        // tokenStart = 0;
                         fsaState = 0;
                     }
                 } else if (fsaState == 4) { // Number token (decimal part): Consume digits to runningToken
@@ -124,7 +124,6 @@ public class Lexer {
                             charNum -= 1; // put back this char & return to state 0
                             runningToken = new StringBuilder();
                             decimalPlaces = 0;
-                            // tokenStart = 0;
                             fsaState = 0;
                         }
                     }
@@ -132,7 +131,6 @@ public class Lexer {
                     if (isStringLimiter(currentChar)) {
                         tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine, TokenType.STR));
                         runningToken = new StringBuilder();
-                        // tokenStart = 0;
                         fsaState = 0;
                     } else {
                         runningToken.append(currentChar);
@@ -145,12 +143,10 @@ public class Lexer {
                 tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine,
                         isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
                 runningToken = new StringBuilder();
-                // tokenStart = 0;
                 fsaState = 0;
             } else if (fsaState == 3) {
                 tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine, TokenType.NUM));
                 runningToken = new StringBuilder();
-                // tokenStart = 0;
                 fsaState = 0;
             } else if (fsaState == 4) {
                 if (decimalPlaces == 0) {
@@ -159,7 +155,6 @@ public class Lexer {
                     tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine, TokenType.NUM));
                     runningToken = new StringBuilder();
                     decimalPlaces = 0;
-                    // tokenStart = 0;
                     fsaState = 0;
                 }
             } else if (fsaState == 5) {
