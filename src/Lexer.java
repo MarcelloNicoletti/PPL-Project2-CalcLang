@@ -6,7 +6,9 @@ import java.util.*;
  */
 public class Lexer {
 
-    private static final String[] keywords = {"show", "msg", "newline", "input"};
+    private static final String[] keywordArray = {"show", "msg", "newline", "input"};
+    // HashSet.contains() is quicker than iterating the array
+    private static final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywordArray));
     private LinkedList<Token> tokens, initialTokens;
 
     { // Runs just before any constructor
@@ -18,7 +20,7 @@ public class Lexer {
     }
 
     public Lexer (File file) throws FileNotFoundException, LexingException {
-        this.tokenize(new FileReader(file)); // new File(filename);
+        this.tokenize(new FileReader(file));
     }
 
     public boolean hasNextToken () {
@@ -171,12 +173,7 @@ public class Lexer {
     }
 
     private boolean isKeyword (String x) {
-        for (String test : keywords) {
-            if (x.equals(test)) {
-                return true;
-            }
-        }
-        return false;
+        return keywordSet.contains(x);
     }
 
     private boolean isCommentStart (char x) {
