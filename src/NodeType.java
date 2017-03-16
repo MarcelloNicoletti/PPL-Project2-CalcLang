@@ -1,0 +1,14 @@
+public enum NodeType {
+    PROGRAM,
+    STATEMENTS,
+    STATEMENT,
+    STRING,
+    INPUTSTATEMENT,
+    ASSIGNMENTSTATEMENT,
+    VARIABLE,
+    EXPRESSION,
+    TERM,
+    FACTOR,
+    NUMBER,
+    ;
+}
