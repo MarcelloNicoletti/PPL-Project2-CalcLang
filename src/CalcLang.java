@@ -3,6 +3,7 @@ import java.io.*;
 public class CalcLang {
     public static void main (String[] args) {
         Lexer lexer;
+        Parser parser;
 
         // Initialize Lexer.
         try {
@@ -13,10 +14,22 @@ public class CalcLang {
             return;
         }
 
-        // Try parsing test file
+        // Try lexing test file
         try {
             lexer.tokenize();
         } catch (LexingException ex) {
+            System.err.println(ex.getMessage());
+            System.exit(-2);
+            return;
+        }
+
+        // Initialize Parser
+        parser = new Parser(lexer);
+
+        // Try parsing tokens.
+        try {
+            parser.parseTokens();
+        } catch (ParsingException ex) {
             System.err.println(ex.getMessage());
             System.exit(-2);
             return;
