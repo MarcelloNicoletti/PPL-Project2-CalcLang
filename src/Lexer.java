@@ -9,56 +9,25 @@ public class Lexer {
     private static final String[] keywordArray = {"show", "msg", "newline", "input"};
     // HashSet.contains() is quicker than iterating the array
     private static final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywordArray));
+    private final Reader reader;
     private LinkedList<Token> tokens, initialTokens;
 
     { // Runs just before any constructor
         this.tokens = new LinkedList<>();
     }
 
-    public Lexer (String string) throws LexingException{
-        this.tokenize(new StringReader(string));
+    public Lexer (String string) {
+        this.reader = new StringReader(string);
     }
 
-    public Lexer (File file) throws FileNotFoundException, LexingException {
-        this.tokenize(new FileReader(file));
+    public Lexer (File file) throws FileNotFoundException {
+        this.reader = new FileReader(file);
     }
 
-    public boolean hasNextToken () {
-        return tokens.size() > 0;
-    }
-
-    public Token nextToken () {
-        return (tokens.size() > 0) ? tokens.pop() : null;
-    }
-
-    public Token peekNextToken () {
-        return (tokens.size() > 0) ? tokens.peek() : null;
-    }
-
-    public Collection<Token> getRemainingTokens () {
-        return tokens;
-    }
-
-    public Collection<Token> getAllTokens () {
-        return initialTokens;
-    }
-
-    public void putTokenBack (Token token) {
-        tokens.push(token);
-    }
-
-    public void resetAllTokens () {
-        this.tokens = new LinkedList<>(this.initialTokens);
-    }
-
-    public int getTokenCount() {
-        return tokens.size();
-    }
-
-    private void tokenize (Reader rdr) throws LexingException {
+    public void tokenize () throws LexingException {
         // TODO: Review token termination cases.
+        Scanner scn = new Scanner(reader);
 
-        Scanner scn = new Scanner(rdr);
         int fsaState = 0;
         int lineNum = 0;
         int tokenStart = 0;
@@ -171,6 +140,40 @@ public class Lexer {
 
         this.initialTokens = new LinkedList<>(this.tokens);
     }
+
+    public boolean hasNextToken () {
+        return tokens.size() > 0;
+    }
+
+    public Token nextToken () {
+        return (tokens.size() > 0) ? tokens.pop() : null;
+    }
+
+    public Token peekNextToken () {
+        return (tokens.size() > 0) ? tokens.peek() : null;
+    }
+
+    public Collection<Token> getRemainingTokens () {
+        return new LinkedList<>(tokens);
+    }
+
+    public Collection<Token> getAllTokens () {
+        return new LinkedList<>(initialTokens);
+    }
+
+    public void putTokenBack (Token token) {
+        tokens.push(token);
+    }
+
+    public void resetAllTokens () {
+        this.tokens = new LinkedList<>(this.initialTokens);
+    }
+
+    public int getTokenCount () {
+        return tokens.size();
+    }
+
+    // Used during lexing to determine state transitions or token types
 
     private boolean isKeyword (String x) {
         return keywordSet.contains(x);
