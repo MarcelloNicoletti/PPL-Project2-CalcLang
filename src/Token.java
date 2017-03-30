@@ -6,8 +6,8 @@ public class Token {
     private final String value, sourceLine;
     private final int lineNumber, startChar;
 
-    public Token (String id, int lineNumber, int startChar, String line, TokenType type) {
-        value = id;
+    public Token (String value, int lineNumber, int startChar, String line, TokenType type) {
+        this.value = value;
         this.type = type;
         this.sourceLine = line;
         this.startChar = startChar;

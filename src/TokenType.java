@@ -3,5 +3,8 @@ public enum TokenType {
     ID,
     NUM,
     MATH,
-    STR;
+    STR,
+    BIFN,
+    EOF,
+    ;
 }

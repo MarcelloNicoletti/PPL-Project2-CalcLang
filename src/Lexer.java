@@ -9,6 +9,9 @@ public class Lexer {
     private static final String[] keywordArray = {"show", "msg", "newline", "input"};
     // HashSet.contains() is quicker than iterating the array
     private static final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywordArray));
+    private static final String[] builtInFuncArray = {"sin", "cos", "sqrt"};
+    // HashSet.contains() is quicker than iterating the array
+    private static final Set<String> builtInFuncSet = new HashSet<>(Arrays.asList(builtInFuncArray));
     private final Reader reader;
     private LinkedList<Token> tokens, initialTokens;
 
@@ -68,8 +71,15 @@ public class Lexer {
                     if (isLetter(currentChar) || isDigit(currentChar)) {
                         runningToken.append(currentChar);
                     } else {
-                        this.tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine,
-                                isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
+                        TokenType type;
+                        if (isKeyword(runningToken.toString())) {
+                            type = TokenType.KEY;
+                        } else if (isBuiltInFunc(runningToken.toString())) {
+                            type = TokenType.BIFN;
+                        } else {
+                            type = TokenType.ID;
+                        }
+                        this.tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine, type));
                         charNum -= 1; // put back this char & return to state 0
                         runningToken = new StringBuilder();
                         fsaState = 0;
@@ -115,8 +125,15 @@ public class Lexer {
 
             // Finalize tokens that end at the end of the line.
             if (fsaState == 1) {
-                tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine,
-                        isKeyword(runningToken.toString()) ? TokenType.KEY : TokenType.ID));
+                TokenType type;
+                if (isKeyword(runningToken.toString())) {
+                    type = TokenType.KEY;
+                } else if (isBuiltInFunc(runningToken.toString())) {
+                    type = TokenType.BIFN;
+                } else {
+                    type = TokenType.ID;
+                }
+                tokens.add(new Token(runningToken.toString(), lineNum, tokenStart, sourceLine, type));
                 runningToken = new StringBuilder();
                 fsaState = 0;
             } else if (fsaState == 3) {
@@ -138,7 +155,9 @@ public class Lexer {
             }
         }
 
-        this.initialTokens = new LinkedList<>(this.tokens);
+        tokens.add(new Token("", ++lineNum, 0, "", TokenType.EOF));
+
+        initialTokens = new LinkedList<>(tokens);
     }
 
     public boolean hasNextToken () {
@@ -173,10 +192,14 @@ public class Lexer {
         return tokens.size();
     }
 
-    // Used during lexing to determine state transitions or token types
+    // These private methods are used during lexing to determine state transitions or token types
 
     private boolean isKeyword (String x) {
         return keywordSet.contains(x);
+    }
+
+    private boolean isBuiltInFunc (String x) {
+        return builtInFuncSet.contains(x);
     }
 
     private boolean isCommentStart (char x) {
