@@ -1,0 +1,2 @@
+a = 1 - sqrt(sin(x) + cos (y))
+show a
