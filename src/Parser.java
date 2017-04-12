@@ -47,6 +47,7 @@ public class Parser {
                     Token msg = lex.nextToken();
                     if (msg.getType() == TokenType.STR) {
                         statement = new Node(NodeType.MESSAGE, parent);
+                        statement.setData(msg.getValue());
                     } else {
                         throw ParsingException.newFromToken("Expected string but got " + msg.getType().toString(), msg);
                     }
@@ -55,6 +56,7 @@ public class Parser {
                     Token input = lex.nextToken();
                     if (input.getType() == TokenType.STR) {
                         statement = new Node(NodeType.INPUT, parent);
+                        statement.setData(input.getValue());
                         Token ident = lex.nextToken();
                         if (ident.getType() == TokenType.ID) {
                             Node variable = new Node(NodeType.VARIABLE, statement);
