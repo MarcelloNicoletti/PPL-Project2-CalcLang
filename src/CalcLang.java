@@ -35,6 +35,15 @@ public class CalcLang {
             return;
         }
 
+        // Get root node and initialize executor.
+        Node root = parser.getRootNode();
+        Executor executor = new Executor(parser.getIdentifierSet());
+
+        // Execute parse tree
+        executor.execute(root);
+
+
+        // ===== TEMPORARY DEBUGGING =====
         int count = 0;
         while (lexer.hasNextToken()) {
             Token token = lexer.nextToken();
