@@ -1,2 +1,5 @@
-a = 1 - sqrt(sin(x) + cos (y))
-show a
+a = 15
+show a newline
+msg "Test message" newline
+input "b = " b
+show b + a newline newline
