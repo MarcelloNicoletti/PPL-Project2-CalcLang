@@ -14,9 +14,9 @@ public class Node {
         this.children = new LinkedList<>();
     }
 
-    public Node (NodeType nodeType, String data, Node parent) {
+    public Node (NodeType nodeType, Node parent) {
         this.nodeType = nodeType;
-        this.data = data;
+        this.data = "";
         this.parent = parent;
         this.children = new LinkedList<>();
     }

@@ -21,11 +21,11 @@ public class Executor {
                 break;
             case STATEMENT:
                 break;
-            case MESSAGESTATEMENT:
+            case MESSAGE:
                 break;
-            case INPUTSTATEMENT:
+            case INPUT:
                 break;
-            case ASSIGNMENTSTATEMENT:
+            case ASSIGNMENT:
                 break;
         }
     }
