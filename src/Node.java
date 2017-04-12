@@ -1,34 +1,22 @@
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Node {
     private final NodeType nodeType;
-    private final String stringData;
-    private final BigDecimal numberData;
+    private final String data;
     private final Node parent;
     private List<Node> children;
 
     public Node () {
         this.nodeType = NodeType.PROGRAM;
-        this.stringData = null;
-        this.numberData = null;
+        this.data = null;
         this.parent = null;
         this.children = new LinkedList<>();
     }
 
     public Node (NodeType nodeType, String data, Node parent) {
         this.nodeType = nodeType;
-        this.stringData = data;
-        this.numberData = null;
-        this.parent = parent;
-        this.children = new LinkedList<>();
-    }
-
-    public Node (NodeType nodeType, BigDecimal data, Node parent) {
-        this.nodeType = nodeType;
-        this.stringData = null;
-        this.numberData = data;
+        this.data = data;
         this.parent = parent;
         this.children = new LinkedList<>();
     }
@@ -37,12 +25,8 @@ public class Node {
         return nodeType;
     }
 
-    public String getStringData () {
-        return stringData;
-    }
-
-    public BigDecimal getNumberData () {
-        return numberData;
+    public String getData () {
+        return data;
     }
 
     public Node getParent () {
@@ -50,7 +34,15 @@ public class Node {
     }
 
     public List<Node> getChildren () {
-        return children;
+        return new LinkedList<>(children);
+    }
+
+    public Node getChild (int n) {
+        if (n >= 0 && n < children.size()) {
+            return children.get(n);
+        } else {
+            return null;
+        }
     }
 
     public void addChildNode (Node node) {

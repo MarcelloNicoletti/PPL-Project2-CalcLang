@@ -3,6 +3,11 @@ import java.util.*;
 public class Parser {
     private final Lexer lex;
     private final Node rootNode;
+    private Set<String> identifierSet; // Build a set of identifiers up while parsing. This helps on execution.
+
+    {
+        this.identifierSet = new HashSet<>();
+    }
 
     public Parser (Lexer lex) {
         this.lex = lex;
@@ -14,6 +19,10 @@ public class Parser {
     }
 
     public Node getRootNode () {
-        return rootNode;
+        return this.rootNode;
+    }
+
+    public Set<String> getIdentifierSet () {
+        return this.identifierSet;
     }
 }
