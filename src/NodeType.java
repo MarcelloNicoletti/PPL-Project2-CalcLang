@@ -1,7 +1,6 @@
 public enum NodeType {
     PROGRAM,
     STATEMENTS,
-    STATEMENT,
     MESSAGE,
     INPUT,
     ASSIGNMENT,
