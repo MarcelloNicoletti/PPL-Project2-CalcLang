@@ -1,4 +1,5 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class CalcLang {
     public static void main (String[] args) {
@@ -44,17 +45,28 @@ public class CalcLang {
 
 
         // ===== TEMPORARY DEBUGGING =====
-        int count = 0;
-        while (lexer.hasNextToken()) {
-            Token token = lexer.nextToken();
-            System.out.println("Line " + token.getLineNumber() + ": Token " + (count++) + ": " + token.toString());
-            System.out.println(token.getSourceLine());
-            for (int i = 0; i < token.getStartChar(); i++) {
-                System.out.print(" ");
-            }
-            System.out.println("^");
-        }
+//        lexer.resetAllTokens();
+//
+//        int count = 0;
+//        while (lexer.hasNextToken()) {
+//            Token token = lexer.nextToken();
+//            System.out.println("Line " + token.getLineNumber() + ": Token " + (count++) + ": " + token.toString());
+//            System.out.println(token.getSourceLine());
+//            for (int i = 0; i < token.getStartChar(); i++) {
+//                System.out.print(" ");
+//            }
+//            System.out.println("^");
+//        }
+        displayTree(root, 2, 0);
+    }
 
-        lexer.resetAllTokens();
+    private static void displayTree (Node node, int indentSize, int indentLevel) {
+        for (int i = 0; i < indentSize * indentLevel; i++) {
+            System.out.print(" ");
+        }
+        System.out.println("[" + node.getNodeType() + ": " + node.getData() + "]");
+        for (Node child : node.getChildren()) {
+            displayTree(child, indentSize, indentLevel + 1);
+        }
     }
 }
