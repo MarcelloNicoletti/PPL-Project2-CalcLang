@@ -3,9 +3,9 @@ import java.util.List;
 
 public class Node {
     private final NodeType nodeType;
-    private final String data;
+    private String data;
     private final Node parent;
-    private List<Node> children;
+    private final List<Node> children;
 
     public Node () {
         this.nodeType = NodeType.PROGRAM;
@@ -27,6 +27,10 @@ public class Node {
 
     public String getData () {
         return data;
+    }
+
+    public void setData (String data) {
+        this.data = data;
     }
 
     public Node getParent () {
