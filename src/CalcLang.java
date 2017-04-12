@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class CalcLang {
     public static void main (String[] args) {
         Lexer lexer;
         Parser parser;
+        Scanner stdin = new Scanner(System.in);
 
         // Initialize Lexer.
         try {
@@ -24,6 +26,21 @@ public class CalcLang {
             return;
         }
 
+
+//         ===== TEMPORARY DEBUGGING =====
+
+        int count = 0;
+        while (lexer.hasNextToken()) {
+            Token token = lexer.nextToken();
+            System.out.println("Line " + token.getLineNumber() + ": Token " + (count++) + ": " + token.toString());
+            System.out.println(token.getSourceLine());
+            for (int i = 0; i < token.getStartChar(); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("^");
+        }
+        lexer.resetAllTokens();
+
         // Initialize Parser
         parser = new Parser(lexer);
 
@@ -38,26 +55,12 @@ public class CalcLang {
 
         // Get root node and initialize executor.
         Node root = parser.getRootNode();
-        Executor executor = new Executor(parser.getIdentifierSet());
+        Executor executor = new Executor(parser.getIdentifierSet(), stdin);
+
+        displayTree(root, 2, 0);
 
         // Execute parse tree
         executor.execute(root);
-
-
-        // ===== TEMPORARY DEBUGGING =====
-//        lexer.resetAllTokens();
-//
-//        int count = 0;
-//        while (lexer.hasNextToken()) {
-//            Token token = lexer.nextToken();
-//            System.out.println("Line " + token.getLineNumber() + ": Token " + (count++) + ": " + token.toString());
-//            System.out.println(token.getSourceLine());
-//            for (int i = 0; i < token.getStartChar(); i++) {
-//                System.out.print(" ");
-//            }
-//            System.out.println("^");
-//        }
-        displayTree(root, 2, 0);
     }
 
     private static void displayTree (Node node, int indentSize, int indentLevel) {
