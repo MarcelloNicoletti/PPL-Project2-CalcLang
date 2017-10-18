@@ -84,7 +84,11 @@ public class Parser {
                 throw ParsingException.newFromToken("Expected assignment", equalSign);
             }
         } else {
-            throw ParsingException.newFromToken("Unexpected expression", token);
+            if (token.getValue().equals(")")) {
+                throw ParsingException.newFromToken("Parenthesis mismatch", token);
+            } else {
+                throw ParsingException.newFromToken("Unexpected expression", token);
+            }
         }
         return statement;
     }
@@ -155,7 +159,7 @@ public class Parser {
                     if (lex.peekNextToken().getValue().equals(")")) {
                         lex.nextToken(); // pop it away
                     } else {
-                        throw ParsingException.newFromToken("Parenthesis mismatch at ", lex.peekNextToken());
+                        throw ParsingException.newFromToken("Parenthesis not closed", token);
                     }
                     break;
                 case "-":
@@ -163,7 +167,7 @@ public class Parser {
                     factor.addChildNode(parseFactor(factor));
                     break;
                 default:
-                    throw ParsingException.newFromToken("", token);
+                    throw ParsingException.newFromToken("Unexpected token", token);
             }
         } else if (token.getType() == TokenType.BIFN) {
             Node bifn = new Node(NodeType.BIFN, parent);
@@ -174,7 +178,7 @@ public class Parser {
                 if (lex.peekNextToken().getValue().equals(")")) {
                     lex.nextToken(); // pop it away
                 } else {
-                    throw ParsingException.newFromToken("Parenthesis mismatch at ", lex.peekNextToken());
+                    throw ParsingException.newFromToken("Parenthesis not closed", paren);
                 }
             } else {
                 throw ParsingException.newFromToken("Expected function arguments", paren);

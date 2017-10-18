@@ -4,6 +4,7 @@ import java.util.List;
 public class Node {
     private final NodeType nodeType;
     private String data;
+    private Token fromToken;
     private final Node parent;
     private final List<Node> children;
 
